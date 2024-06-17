@@ -1,0 +1,22 @@
+.header {
+    background-color: #1b1b1b;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navBar__title {
+    color: white;
+    text-decoration: none;
+}
+
+.header__login {
+    color: #999999;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: all 200ms ease-in-out;
+}
+
+.header__login:hover {
+    color: white;
+}
