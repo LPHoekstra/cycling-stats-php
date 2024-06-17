@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
+session_start();
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cycling-stats</title>
-    <link rel="stylesheet" href="./styles/header.css">
-    <link rel="stylesheet" href="./styles/global.css">
-</head>
-
-<body>
-    <!-- header -->
-    <?php require_once(__DIR__ . "/header.php") ?>
-    <!-- Main -->
-    <h1>Bienvenue sur Cycling Stats</h1>
-</body>
-
-</html>
+require_once(__DIR__ . "/src/model.php");
+require_once(__DIR__ . "/src/login.php");
+require_once(__DIR__ . "/templates/homepage.php");
