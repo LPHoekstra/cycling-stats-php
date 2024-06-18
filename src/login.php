@@ -3,7 +3,7 @@
 function getBearerCode()
 {
     try {
-        $usCode = htmlspecialchars($_GET["code"]);
+        $usAuthorizationCode = htmlspecialchars($_GET["code"]);
         $clientSecret = "cdf3d3735500de9882f258ad4f08cd0cc1dc89dc";
         $clientId = "127497";
         $grantType = "authorization_code";
@@ -12,7 +12,7 @@ function getBearerCode()
         $data = [
             "client_id" => $clientId,
             "client_secret" => $clientSecret,
-            "code" => $usCode,
+            "code" => $usAuthorizationCode,
             "grant_type" => $grantType
         ];
 
@@ -34,10 +34,19 @@ function getBearerCode()
 
         curl_close($ch);
 
-        $usBearerCode = $_GET["code"];
-        $_SESSION["loggedUser"] = ["bearer" => "Bearer {$usBearerCode}"];
+        $responseData = json_decode($response, true);
 
-        // redirectUrl("./");
+        if (!isset($responseData["access_token"])) {
+            throw new Exception("Access Token missing in the answer");
+        }
+
+        $accessToken = $responseData["access_token"];
+        $userName = $responseData["athlete"]["firstname"];
+
+        $_SESSION["loggedUser"]["bearer"] = "Bearer {$accessToken}";
+        $_SESSION["loggedUser"]["name"] = $userName;
+
+        redirectUrl("./");
         exit();
     } catch (Exception $error) {
         echo "Error " . $error->getMessage();

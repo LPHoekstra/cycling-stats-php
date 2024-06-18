@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -17,9 +17,16 @@
                 <h2>Cycling Stats</h2>
             </a>
         </nav>
-        <a class="header__login" href="http://www.strava.com/oauth/authorize?client_id=127497&response_type=code&redirect_uri=https://localhost/cycling-stats&approval_prompt=force&scope=read">
-            Login
-        </a>
+
+        <?php // Connection information
+        if (!isset($_SESSION["loggedUser"])) : ?>
+            <a class="header__login" href="http://www.strava.com/oauth/authorize?client_id=127497&response_type=code&redirect_uri=https://localhost/cycling-stats&approval_prompt=force&scope=read,activity:read_all,profile:read_all">
+                Login
+            </a>
+        <?php else : ?>
+            <span class="header__login"><?= $_SESSION["loggedUser"]["name"] ?></span>
+        <?php endif ?>
+
     </header>
     <!-- Main -->
     <h1>Bienvenue sur Cycling Stats</h1>
@@ -28,10 +35,22 @@
         $bearer = $_SESSION["loggedUser"]["bearer"]; ?>
         <h4><?= $bearer ?></h4>
     <?php endif ?>
-    <form action="cycling-stats/../src/model.php" method="POST">
-        <input type="hidden" name="action" value="callFunction">
-        <button type="submit">Call Strava</button>
-    </form>
+    <button id="athleteInfo">Call athlete</button>
+    <script>
+        let bearerToken = "<?= $_SESSION["loggedUser"]["bearer"] ?>"
+        document.getElementById("athleteInfo").addEventListener("click", () => {
+            console.log(bearerToken)
+            fetch("https://www.strava.com/api/v3/athlete/activities", {
+                    method: "GET",
+                    headers: {
+                        Authorization: bearerToken
+                    }
+                })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error))
+        })
+    </script>
 </body>
 
 </html>
