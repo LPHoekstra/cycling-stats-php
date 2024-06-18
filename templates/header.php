@@ -11,9 +11,9 @@
             Login
         </a>
     <?php else : ?>
-        <div>
-            <span><?= $_SESSION["loggedUser"]["profile"] ?></span>
-            <span class="header__login"><?= $_SESSION["loggedUser"]["firstname"] ?></span>
+        <div class="user-contenair">
+            <img class="user-contenair__picture" src=<?= $_SESSION["loggedUser"]["profile"] ?> alt="profile picture">
+            <span class="user-contenair__login"><?= $_SESSION["loggedUser"]["firstname"] ?></span>
             <a href="src/logout.php">
                 <button>Déconnexion</button>
             </a>
