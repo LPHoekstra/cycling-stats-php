@@ -1,8 +1,19 @@
 <header class="header">
+    <a href="./" class="header__title">
+        <h2>Cycling Stats</h2>
+    </a>
     <nav>
-        <a href="./" class="navBar__title">
-            <h2>Cycling Stats</h2>
-        </a>
+        <ul class="navBar">
+            <li class="navBar__liste">
+                <a class="navBar__link" href="">Summary</a>
+            </li>
+            <li class="navBar__liste">
+                <a class="navBar__link" href="">Activities</a>
+            </li>
+            <li class="navBar__liste">
+                <a class="navBar__link" href="">update</a>
+            </li>
+        </ul>
     </nav>
 
     <?php // Connection information
