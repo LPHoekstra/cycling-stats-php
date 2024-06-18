@@ -37,7 +37,7 @@ function getBearerCode()
         $responseData = json_decode($response, true);
 
         if (!isset($responseData["access_token"])) {
-            throw new Exception("Access Token missing in the answer");
+            throw new Exception("Access Token missing in the answer (login.php)");
         }
 
         if (isset($_FILES["profile"]) &&  $_FILES["profile"]["error"] === 0) {

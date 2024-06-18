@@ -1,5 +1,7 @@
 <?php
 
+require_once(__DIR__ . "/functions.php");
+
 function getAthleteInfo()
 {
     $bearerToken = $_SESSION["loggedUser"]["bearer"];
