@@ -24,20 +24,26 @@
                 Login
             </a>
         <?php else : ?>
-            <span class="header__login"><?= $_SESSION["loggedUser"]["name"] ?></span>
+            <div>
+                <span><?= $_SESSION["loggedUser"]["profile"] ?></span>
+                <span class="header__login"><?= $_SESSION["loggedUser"]["firstname"] ?></span>
+                <a href="src/logout.php">
+                    <button>Déconnexion</button>
+                </a>
+            </div>
         <?php endif ?>
 
     </header>
     <!-- Main -->
     <h1>Bienvenue sur Cycling Stats</h1>
     <?php
-    if (isset($_SESSION["loggedUser"]["bearer"])) :
-        $bearer = $_SESSION["loggedUser"]["bearer"]; ?>
+    if (isset($_SESSION["loggedUser"]["access_token"])) :
+        $bearer = $_SESSION["loggedUser"]["access_token"]; ?>
         <h4><?= $bearer ?></h4>
     <?php endif ?>
     <button id="athleteInfo">Call athlete</button>
     <script>
-        let bearerToken = "<?= $_SESSION["loggedUser"]["bearer"] ?>"
+        let bearerToken = "<?= $_SESSION["loggedUser"]["access_token"] ?>"
         document.getElementById("athleteInfo").addEventListener("click", () => {
             console.log(bearerToken)
             fetch("https://www.strava.com/api/v3/athlete/activities", {
