@@ -14,16 +14,10 @@
     <?php require_once(__DIR__ . "/header.php") ?>
     <!-- Main -->
     <h1>Bienvenue sur Cycling Stats</h1>
-    <?php
-    if (isset($_SESSION["loggedUser"]["access_token"])) :
-        $bearer = $_SESSION["loggedUser"]["access_token"]; ?>
-        <h4><?= $bearer ?></h4>
-    <?php endif ?>
     <button id="athleteInfo">Call athlete</button>
     <script>
         let bearerToken = "<?= $_SESSION["loggedUser"]["access_token"] ?>"
         document.getElementById("athleteInfo").addEventListener("click", () => {
-            console.log(bearerToken)
             fetch("https://www.strava.com/api/v3/athlete/activities", {
                     method: "GET",
                     headers: {

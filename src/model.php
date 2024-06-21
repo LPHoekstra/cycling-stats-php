@@ -1,6 +1,10 @@
 <?php
 
-require_once(__DIR__ . "/functions.php");
+require_once(__DIR__ . "/../functions.php");
+
+/** GET path to retrieve data for user 
+ * client ask for html to server => server retrieve data in the DB => server send html with data to the client
+ */
 
 function getAthleteInfo()
 {
@@ -23,8 +27,4 @@ function getAthleteInfo()
 
     curl_close($ch);
     // redirectUrl("../");
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'callFunction') {
-    getAthleteInfo();
 }
