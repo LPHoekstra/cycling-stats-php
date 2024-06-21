@@ -1,3 +1,19 @@
 * {
     margin: 0;
 }
+
+main {
+    background-color: #f4f4f4;
+    padding: 5px;
+}
+
+.last-month-chart-contenair {
+    background-color: white;
+    border: 1px solid grey;
+    position: relative;
+    padding: 10px;
+    /* height: 42vh; */
+    max-height: 40vh;
+    height: auto;
+    width: auto;
+}
