@@ -15,42 +15,10 @@
     <!-- Main -->
     <main>
 
-        <h1>Bienvenue sur Cycling Stats <?= $_SESSION["loggedUser"]["firstname"] ?></h1>
-        <?php // distance chart
-        if (isset($_SESSION["loggedUser"])) :
-            require_once(__DIR__ . "/../src/distance-last-month.php")
-        ?>
-            <div class="last-month-chart-contenair">
-                <canvas id="last-month-resume"></canvas>
-            </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-            <script>
-                const ctx = document.getElementById("last-month-resume")
-
-                new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                        labels: <?= json_encode($_SESSION["loggedUser"]["startDateLast30Act"]) ?>,
-                        datasets: [{
-                            label: "distance last 30 days",
-                            data: <?= json_encode($_SESSION["loggedUser"]["distanceLast30Act"]) ?>,
-                            borderWidth: 0,
-                            backgroundColor: "rgba(42, 99, 255, 0.8)",
-                        }]
-                    },
-                    options: {
-                        aspectRatio: 1 | 4,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        },
-                    }
-                })
-            </script>
-        <?php endif ?>
+        <h1>Bienvenue sur Cycling Stats <?php if (isset($_SESSION["loggedUser"])) {
+                                            echo $_SESSION["loggedUser"]["firstname"];
+                                        } ?></h1>
+        <?php require_once(__DIR__ . "/distance-bar-chart.php") ?>
         <!-- test call -->
         <button id="athleteInfo">Call athlete</button>
         <script>
