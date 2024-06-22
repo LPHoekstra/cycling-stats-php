@@ -1,22 +1,60 @@
 .header {
     background-color: #1b1b1b;
     padding: 15px;
-    display: flex;
-    justify-content: space-between;
 }
 
-.navBar__title {
+.header__title {
     color: white;
     text-decoration: none;
+    display: inline-block;
 }
 
-.header__login {
+nav {
+    display: inline-block;
+}
+
+.navBar {
+    color: #999999;
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+}
+
+.navBar__liste {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+}
+
+.navBar__link {
     color: #999999;
     text-decoration: none;
     font-size: 1.2em;
-    transition: all 200ms ease-in-out;
+    transition: all 200ms ease;
 }
 
-.header__login:hover {
+.user-contenair {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    float: right;
+    
+}
+
+.user-contenair__login {
+    color: #999999;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: all 200ms ease;
+    cursor: pointer;
+}
+
+.user-contenair__login:hover,
+.navBar__link:hover {
     color: white;
+}
+
+.user-contenair__picture {
+    height: 30px;
+    width: 30px;
 }

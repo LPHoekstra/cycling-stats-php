@@ -37,14 +37,16 @@ function getBearerCode()
         $responseData = json_decode($response, true);
 
         if (!isset($responseData["access_token"])) {
-            throw new Exception("Access Token missing in the answer");
+            throw new Exception("Access Token missing in the answer (login.php)");
         }
 
         $accessToken = $responseData["access_token"];
-        $userName = $responseData["athlete"]["firstname"];
+        $firstname = $responseData["athlete"]["firstname"];
+        $profile = $responseData["athlete"]["profile"];
 
-        $_SESSION["loggedUser"]["bearer"] = "Bearer {$accessToken}";
-        $_SESSION["loggedUser"]["name"] = $userName;
+        $_SESSION["loggedUser"]["access_token"] = "Bearer {$accessToken}";
+        $_SESSION["loggedUser"]["firstname"] = $firstname;
+        $_SESSION["loggedUser"]["profile"] = $profile;
 
         redirectUrl("./");
         exit();
