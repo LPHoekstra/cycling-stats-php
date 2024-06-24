@@ -17,3 +17,31 @@ main {
     height: auto;
     width: auto;
 }
+
+.recent-activities-table {
+    border: 1px solid grey;
+    border-spacing: 0;
+}
+
+th {
+    background-color: #1b1b1b;
+    color: white;
+    font-weight: 400;
+}
+
+td, th{
+    border-left: 1px solid grey;
+    border-bottom: 1px solid grey;
+    padding: 4px;
+}
+
+.recent-activities-table__name {
+    width: 25%;
+    text-align: left;
+}
+
+.recent-activities-table__date {
+    width: 17%;
+    text-align: left;
+    padding: 4px;
+}
