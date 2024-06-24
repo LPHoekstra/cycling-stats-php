@@ -14,20 +14,38 @@ function distanceLastMonth()
     // getting actual date
     $date = new DateTime();
 
-    for ($i = 0; $i <= 30; $i++) {
+    // Looking for activities last 31 days
+    for ($i = 0; $i < 31; $i++) {
         $dateString = $date->format("Y-m-d");
 
-        // extract de date form the activity start date
-        $dateExplode = explode("T", $activities[$i]["start_date_local"])[0];
+        // Compare each activities with the same date
+        foreach ($activities as $act) {
 
-        // check if the formatted date matches with the activity
-        if ($dateString === $dateExplode) {
-            $distance[] = $activities[$i]["distance"];
-        } else {
-            $distance[] = 0;
+            // extract de date from the activity start date
+            $dateExplode = explode("T", $act["start_date_local"])[0];
+
+            // If an activity have the same date as the compared one then he's added in the array
+            if ($dateExplode === $dateString) {
+
+                // If the last added have the same date so we add the distance
+                if ($dateString === end($startDate)) {
+                    $lastDistance = array_pop($distance);
+                    $addedDistance = $lastDistance + $act["distance"];
+                    $distance[] = $addedDistance;
+                }
+                // Otherwise we add up the array   
+                else {
+                    $distance[] = $act["distance"];
+                    $startDate[] = $dateString;
+                }
+            }
         }
 
-        $startDate[] = $dateString;
+        // If no activities as been added for the date there is nothing
+        if ($dateString !== end($startDate)) {
+            $distance[] = 0;
+            $startDate[] = $dateString;
+        }
 
         $date->modify("-1 day");
     }
@@ -47,10 +65,3 @@ function distanceLastMonth()
 }
 
 distanceLastMonth();
-
-// foreach ($activities as $act) {
-//     $dateOnly = explode("T", $act["start_date_local"])[0];
-//     $startDate[] = $dateOnly;
-
-//     $distance[] = $act["distance"];
-// }
