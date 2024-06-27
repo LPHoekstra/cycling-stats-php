@@ -11,7 +11,7 @@
                 <a class="navBar__link" href="">Activities</a>
             </li>
             <li class="navBar__liste">
-                <a class="navBar__link" href="">update</a>
+                <a class="navBar__link" href="https://localhost/cycling-stats/sql/activities.php">update</a>
             </li>
         </ul>
     </nav>

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once(__DIR__ . "/../functions.php");
 
 /** GET path to retrieve data for user 
