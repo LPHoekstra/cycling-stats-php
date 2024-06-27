@@ -19,7 +19,7 @@
     <div class="user-contenair">
         <?php // Connection information
         if (!isset($_SESSION["loggedUser"])) : ?>
-            <a class="user-contenair__login" href="http://www.strava.com/oauth/authorize?client_id=127497&response_type=code&redirect_uri=https://localhost/cycling-stats&approval_prompt=force&scope=read,activity:read_all,profile:read_all">
+            <a class="user-contenair__login" href="http://www.strava.com/oauth/authorize?client_id=127497&response_type=code&redirect_uri=https://localhost/cycling-stats/login.php&approval_prompt=force&scope=read,activity:read_all,profile:read_all">
                 Login
             </a>
         <?php else : ?>

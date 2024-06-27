@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 function getBearerCode()
 {
@@ -48,7 +49,9 @@ function getBearerCode()
         $_SESSION["loggedUser"]["firstname"] = $firstname;
         $_SESSION["loggedUser"]["profile"] = $profile;
 
-        redirectUrl("./");
+
+
+        header("Location: ./");
         exit();
     } catch (Exception $error) {
         echo "Error " . $error->getMessage();
