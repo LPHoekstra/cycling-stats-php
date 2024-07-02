@@ -1,6 +1,5 @@
 <?php
 require_once(__DIR__ . "/../src/model.php");
-require_once(__DIR__ . "/../DBConnection.php");
 
 $responseData = getAthleteInfo("/activities");
 
@@ -68,16 +67,14 @@ $sqlInsert = "INSERT INTO activities (
 $activitiesStatement = $mysqlClient->prepare($sqlInsert);
 
 foreach ($responseData as $activity) {
+    // GET activities with the same id in the DB as we get from the API
     $sqlQuery = "SELECT id FROM activities WHERE id = :id";
     $idStatement = $mysqlClient->prepare($sqlQuery);
     $idStatement->execute(["id" => $activity["id"]]);
 
     $existingActivity = $idStatement->fetch();
 
-    echo '<pre>';
-    print_r($activity["id"]);
-    echo '</pre>';
-
+    // IF an activity from the API is not in the DB, we add it
     if ($existingActivity === false && $activity["sport_type"] === "Ride") {
 
         try {

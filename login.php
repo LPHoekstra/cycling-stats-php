@@ -44,10 +44,12 @@ try {
     $accessToken = $responseData["access_token"];
     $firstname = $responseData["athlete"]["firstname"];
     $profile = $responseData["athlete"]["profile"];
+    $athleteID = $responseData["athlete"]["id"];
 
     $_SESSION["loggedUser"]["access_token"] = "Bearer {$accessToken}";
     $_SESSION["loggedUser"]["firstname"] = $firstname;
     $_SESSION["loggedUser"]["profile"] = $profile;
+    $_SESSION["loggedUser"]["athlete_id"] = $athleteID;
 
     require_once(__DIR__ . "/sql/userInformation.php");
 

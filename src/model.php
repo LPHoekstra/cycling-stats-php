@@ -1,6 +1,7 @@
 <?php
-session_start();
+// session_start();
 require_once(__DIR__ . "/../functions.php");
+require_once(__DIR__ . "/../DBConnection.php");
 
 /** GET path to retrieve data for user 
  * client ask for html to server => server retrieve data in the DB => server send html with data to the client
