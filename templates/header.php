@@ -11,7 +11,7 @@
                 <a class="navBar__link" href="">Activities</a>
             </li>
             <li class="navBar__liste">
-                <a class="navBar__link" href="">update</a>
+                <a class="navBar__link" href="https://localhost/cycling-stats/sql/activities.php">update</a>
             </li>
         </ul>
     </nav>
@@ -19,7 +19,7 @@
     <div class="user-contenair">
         <?php // Connection information
         if (!isset($_SESSION["loggedUser"])) : ?>
-            <a class="user-contenair__login" href="http://www.strava.com/oauth/authorize?client_id=127497&response_type=code&redirect_uri=https://localhost/cycling-stats&approval_prompt=force&scope=read,activity:read_all,profile:read_all">
+            <a class="user-contenair__login" href="http://www.strava.com/oauth/authorize?client_id=127497&response_type=code&redirect_uri=https://localhost/cycling-stats/login.php&approval_prompt=force&scope=read,activity:read_all,profile:read_all">
                 Login
             </a>
         <?php else : ?>
