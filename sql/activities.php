@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . "/../src/model.php");
 
 $responseData = getAthleteInfo("/activities");
@@ -75,7 +76,7 @@ foreach ($responseData as $activity) {
     $existingActivity = $idStatement->fetch();
 
     // IF an activity from the API is not in the DB, we add it
-    if ($existingActivity === false && $activity["sport_type"] === "Ride") {
+    if ($existingActivity === false && $activity["type"] === "Ride") {
 
         try {
             $activitiesStatement->execute([
@@ -114,3 +115,5 @@ foreach ($responseData as $activity) {
         }
     }
 }
+
+header("Location: ./../");
