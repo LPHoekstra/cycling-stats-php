@@ -23,8 +23,8 @@
                 Login
             </a>
         <?php else : ?>
-            <img class="user-contenair__picture" src=<?= $_SESSION["loggedUser"]["profile"] ?> alt="profile picture">
-            <span class="user-contenair__login"><?= $_SESSION["loggedUser"]["firstname"] ?></span>
+            <img class="user-contenair__picture" src=<?= htmlspecialchars($_SESSION["loggedUser"]["profile"], ENT_QUOTES, 'UTF-8') ?> alt="profile picture">
+            <span class="user-contenair__login"><?= htmlspecialchars($_SESSION["loggedUser"]["firstname"], ENT_QUOTES, 'UTF-8') ?></span>
             <a href="logout.php">
                 <button>Déconnexion</button>
             </a>

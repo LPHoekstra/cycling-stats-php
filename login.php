@@ -53,6 +53,7 @@ try {
 
     require_once(__DIR__ . "/src/userInformation.php");
 
+    session_regenerate_id(true);
     header("Location: ./");
     exit();
 } catch (Exception $error) {

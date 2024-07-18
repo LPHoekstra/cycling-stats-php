@@ -17,7 +17,7 @@
 
         <h1>Bienvenue sur Cycling Stats
             <?php if (isset($_SESSION["loggedUser"])) {
-                echo $_SESSION["loggedUser"]["firstname"];
+                echo htmlspecialchars($_SESSION["loggedUser"]["firstname"], ENT_QUOTES, 'UTF-8');
             } ?>
         </h1>
         <button id="athleteInfo">Call athlete</button>
