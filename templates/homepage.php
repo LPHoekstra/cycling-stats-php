@@ -15,12 +15,17 @@
     <!-- Main -->
     <main>
 
-        <h1>Bienvenue sur Cycling Stats <?php if (isset($_SESSION["loggedUser"])) {
-                                            echo $_SESSION["loggedUser"]["firstname"];
-                                        } ?></h1>
+        <h1>Bienvenue sur Cycling Stats
+            <?php if (isset($_SESSION["loggedUser"])) {
+                echo $_SESSION["loggedUser"]["firstname"];
+            } ?>
+        </h1>
         <button id="athleteInfo">Call athlete</button>
-        <?php require_once(__DIR__ . "/distance-bar-chart.php") ?>
-        <?php require_once(__DIR__ . "/recent-activities.php") ?>
+        <?php if (isset($_SESSION["loggedUser"])) {
+            require_once(__DIR__ . "/distance-bar-chart.php");
+            require_once(__DIR__ . "/recent-activities.php");
+        }
+        ?>
         <!-- test call -->
         <script>
             let bearerToken = "<?= $_SESSION["loggedUser"]["access_token"] ?>"

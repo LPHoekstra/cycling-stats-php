@@ -51,7 +51,7 @@ try {
     $_SESSION["loggedUser"]["profile"] = $profile;
     $_SESSION["loggedUser"]["athlete_id"] = $athleteID;
 
-    require_once(__DIR__ . "/sql/userInformation.php");
+    require_once(__DIR__ . "/src/userInformation.php");
 
     header("Location: ./");
     exit();
