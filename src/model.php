@@ -15,7 +15,4 @@ if (isset($_SESSION["loggedUser"])) {
     } catch (Exception $error) {
         echo "Error: " . $error->getMessage();
     }
-
-    require_once(__DIR__ . "/../distance-last-month.php");
-    require_once(__DIR__ . "/../recent-activities.php");
 }
