@@ -1,8 +1,8 @@
 <?php
 
 // initiate arrays
-$startDate = [];
-$distance = [];
+$startDate = []; // date with format of "d/m/Y"
+$distance = []; // distance by meters
 
 // getting actual date
 $date = new DateTime();
@@ -10,29 +10,36 @@ $date = new DateTime();
 // Looking for activities over the last 31 days
 for ($i = 0; $i < 31; $i++) {
     $dateString = $date->format("Y-m-d");
+    $activityFound = false;
 
     // Compare each activity with the current date
     foreach ($activities as $act) {
-        // extract de date from the activity start date
-        $dateExplode = explode("T", $act["start_date_local"])[0];
+        // extract the date from the activity start date
+        $activityDate = explode("T", $act["start_date_local"])[0];
 
         // If an activity have the same date as the compared one, it's added to the array
-        if ($dateExplode === $dateString) {
+        if ($activityDate === $dateString) {
+            $activityFound = true;
+            $dateTotalExplode = explode("-", $activityDate);
+            $displayedDate = $dateTotalExplode[2] . '/' . $dateTotalExplode[1] . '/' . $dateTotalExplode[0];
+
             // If the last added date is the same, we add the distance to the existing distance
-            if (!empty($startDate) && $dateString === end($startDate)) {
+            if (!empty($startDate) && $displayedDate === end($startDate)) {
                 $lastIndex = array_key_last($distance);
                 $distance[$lastIndex] += $act["distance"];
             } else {
                 $distance[] = $act["distance"];
-                $startDate[] = $dateString;
+                $startDate[] = $displayedDate;
             }
         }
     }
 
     // If no activities have been added for the date, set distance to 0
-    if (empty($startDate) || $dateString !== end($startDate)) {
+    if (!$activityFound) {
+        $dateTotalExplode = explode("-", $dateString);
+        $displayedDate = $dateTotalExplode[2] . '/' . $dateTotalExplode[1] . '/' . $dateTotalExplode[0];
         $distance[] = 0;
-        $startDate[] = $dateString;
+        $startDate[] = $displayedDate;
     }
 
     $date->modify("-1 day");
