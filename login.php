@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-// function getBearerCode()
-// {
 try {
     $usAuthorizationCode = htmlspecialchars($_GET["code"]);
     $clientSecret = "cdf3d3735500de9882f258ad4f08cd0cc1dc89dc";
@@ -59,8 +57,3 @@ try {
 } catch (Exception $error) {
     echo "Error " . $error->getMessage();
 }
-// }
-
-// if (isset($_GET["code"])) {
-//     getBearerCode();
-// }
