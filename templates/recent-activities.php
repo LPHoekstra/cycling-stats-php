@@ -1,6 +1,3 @@
-<?php // distance chart
-require_once(__DIR__ . "/../recent-activities.php") ?>
-
 <h2>Recent Activities</h2>
 <table class="recent-activities-table">
     <thead>

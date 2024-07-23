@@ -1,5 +1,11 @@
 <?php
-session_start();
+require_once(__DIR__ . "/controllers/homepage.php");
+require_once(__DIR__ . "/controllers/login.php");
 
-require_once(__DIR__ . "/src/model.php");
-require_once(__DIR__ . "/templates/homepage.php");
+if ($_GET["action"] === "") {
+    homepage();
+}
+
+if ($_GET["action"] === "login") {
+    login();
+}

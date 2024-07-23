@@ -1,7 +1,3 @@
-<?php // distance chart
-
-require_once(__DIR__ . "/../distance-last-month.php") ?>
-
 <div class="last-month-chart-contenair">
     <canvas id="last-month-resume"></canvas>
 </div>
