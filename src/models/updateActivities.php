@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../src/model.php");
+require_once(__DIR__ . "/../models/model.php");
 
 function updateActivities()
 {
