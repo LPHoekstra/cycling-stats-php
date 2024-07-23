@@ -54,6 +54,6 @@ function login()
         header("Location: ./");
         exit();
     } catch (Exception $error) {
-        echo "Error " . $error->getMessage();
+        echo "Error: " . $error->getMessage();
     }
 }

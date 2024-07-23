@@ -1,9 +1,8 @@
 <?php
-session_start();
 
-require_once(__DIR__ . "/../src/login.php");
-
-function Login()
+function loginController()
 {
+    require_once(__DIR__ . "/../src/login.php");
+
     login();
 }

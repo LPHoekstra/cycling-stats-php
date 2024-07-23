@@ -1,12 +1,13 @@
 <?php
-session_start();
 
-require_once(__DIR__ . "/../src/model.php");
-
-function homepage()
+function homepageController()
 {
-    distanceLastMonth();
-    recentActivities();
+    require_once(__DIR__ . "/../src/model.php");
+
+    if (isset($_SESSION["loggedUser"])) {
+        distanceLastMonth();
+        recentActivities();
+    }
 
     require_once(__DIR__ . "/../templates/homepage.php");
 }

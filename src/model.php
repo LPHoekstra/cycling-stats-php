@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../functions.php");
+require_once(__DIR__ . "/../DBConnection.php");
 
 // get activities from the DB
 function getActivities()
@@ -7,7 +8,7 @@ function getActivities()
     // get last activities and use it
     if (isset($_SESSION["loggedUser"])) {
         try {
-            require_once(__DIR__ . "/../DBConnection.php");
+            $mysqlClient = DBConnection();
 
             // get the activities from the DB
             $sqlSelect = "SELECT * FROM activities WHERE athlete_id = :athlete_id ORDER BY `activities`.`start_date_local` DESC";
@@ -149,7 +150,7 @@ function recentActivities()
 function uploadUser($responseData)
 {
     try {
-        require_once(__DIR__ . "/../DBConnection.php");
+        $mysqlClient = DBConnection();
 
         // Ensure $responseData is defined and containes the expected structure
         if (isset($responseData["athlete"])) {
