@@ -78,43 +78,39 @@ function updateActivities()
         $existingActivity = $idStatement->fetch();
 
         // IF an activity from the API is not in the DB, we add it
-        if ($existingActivity === false && $activity["type"] === "Ride") {
+        if (!$existingActivity && $activity["type"] === "Ride") {
 
-            try {
-                $activitiesStatement->execute([
-                    "id" => $activity["id"],
-                    "athlete_id" => $activity["athlete"]["id"],
-                    "average_cadence" => $activity["average_cadence"],
-                    "average_heartrate" => $activity["average_heartrate"],
-                    "average_speed" => $activity["average_speed"],
-                    "average_temp" => $activity["average_temp"],
-                    "average_watts" => $activity["average_watts"],
-                    "device_watts" => $activity["device_watts"],
-                    "distance" => $activity["distance"],
-                    "elapsed_time" => $activity["elapsed_time"],
-                    "elev_high" => $activity["elev_high"],
-                    "elev_low" => $activity["elev_low"],
-                    "has_heartrate" => $activity["has_heartrate"],
-                    "kilojoules" => $activity["kilojoules"],
-                    "mapId" => $activity["map"]["id"],
-                    "mapResource_state" => $activity["map"]["resource_state"],
-                    "mapSummary_polyline" => $activity["map"]["summary_polyline"],
-                    "max_heartrate" => $activity["max_heartrate"],
-                    "max_speed" => $activity["max_speed"],
-                    "max_watts" => $activity["max_watts"],
-                    "moving_time" => $activity["moving_time"],
-                    "name" => $activity["name"],
-                    "sport_type" => $activity["sport_type"],
-                    "start_date" => $activity["start_date"],
-                    "start_date_local" => $activity["start_date_local"],
-                    "total_elevation_gain" => $activity["total_elevation_gain"],
-                    "type" => $activity["type"],
-                    "upload_id" => $activity["upload_id"],
-                    "weighted_average_watts" => $activity["weighted_average_watts"],
-                ]);
-            } catch (PDOException $error) {
-                echo "Error: " . $error->getMessage();
-            }
+            $activitiesStatement->execute([
+                "id" => $activity["id"],
+                "athlete_id" => $activity["athlete"]["id"],
+                "average_cadence" => $activity["average_cadence"],
+                "average_heartrate" => $activity["average_heartrate"],
+                "average_speed" => $activity["average_speed"],
+                "average_temp" => $activity["average_temp"],
+                "average_watts" => $activity["average_watts"],
+                "device_watts" => $activity["device_watts"],
+                "distance" => $activity["distance"],
+                "elapsed_time" => $activity["elapsed_time"],
+                "elev_high" => $activity["elev_high"],
+                "elev_low" => $activity["elev_low"],
+                "has_heartrate" => $activity["has_heartrate"],
+                "kilojoules" => $activity["kilojoules"],
+                "mapId" => $activity["map"]["id"],
+                "mapResource_state" => $activity["map"]["resource_state"],
+                "mapSummary_polyline" => $activity["map"]["summary_polyline"],
+                "max_heartrate" => $activity["max_heartrate"],
+                "max_speed" => $activity["max_speed"],
+                "max_watts" => $activity["max_watts"],
+                "moving_time" => $activity["moving_time"],
+                "name" => $activity["name"],
+                "sport_type" => $activity["sport_type"],
+                "start_date" => $activity["start_date"],
+                "start_date_local" => $activity["start_date_local"],
+                "total_elevation_gain" => $activity["total_elevation_gain"],
+                "type" => $activity["type"],
+                "upload_id" => $activity["upload_id"],
+                "weighted_average_watts" => $activity["weighted_average_watts"],
+            ]);
         }
     }
 

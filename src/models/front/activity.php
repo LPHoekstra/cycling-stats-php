@@ -6,18 +6,19 @@ function getActivities()
 {
     // get last activities and use it
     if (isset($_SESSION["loggedUser"])) {
-        try {
-            $mysqlClient = DBConnection();
+        $mysqlClient = DBConnection();
 
-            // get the activities from the DB
-            $sqlSelect = "SELECT * FROM activities WHERE athlete_id = :athlete_id ORDER BY `activities`.`start_date_local` DESC";
-            $activitiesStatement = $mysqlClient->prepare($sqlSelect);
-            $activitiesStatement->execute(["athlete_id" => $_SESSION["loggedUser"]["athlete_id"]]);
+        // get the activities from the DB
+        $sqlSelect = "SELECT * FROM activities WHERE athlete_id = :athlete_id ORDER BY `activities`.`start_date_local` DESC";
+        $activitiesStatement = $mysqlClient->prepare($sqlSelect);
+        $activitiesStatement->execute(["athlete_id" => $_SESSION["loggedUser"]["athlete_id"]]);
 
-            return $activities = $activitiesStatement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $error) {
-            echo "Error: " . $error->getMessage();
+        $activities = $activitiesStatement->fetchAll(PDO::FETCH_ASSOC);
+        if (!$activities) {
+            throw new Exception("Activities missing");
         }
+
+        return $activities;
     }
 }
 
@@ -29,6 +30,10 @@ function distanceLastMonth()
     // initiate arrays
     $startDate = []; // date with format of "d/m/Y"
     $distance = []; // distance by meters
+
+    if (!$activities[0]["distance"] || !$activities[0]["start_date_local"]) {
+        throw new Exception("distance and/or start date missing");
+    }
 
     // getting actual date
     $date = new DateTime();
@@ -86,10 +91,10 @@ function recentActivities()
     $recentDate = []; // date with format of "d/m/Y"
     $recentDist = []; // distance by meters
     $recentTime = []; // time in second
-    $recentElev = [];
+    $recentElev = []; // elevation in meters
     $recentABPM = [];
 
-    for ($i = 0; $i <= 9; $i++) {
+    for ($i = 0; $i < 10; $i++) {
         $recentName[] = $activities[$i]["name"];
         $dateExplode = explode("T", $activities[$i]["start_date_local"])[0];
         $date = explode("-", $dateExplode);
@@ -97,13 +102,8 @@ function recentActivities()
 
         $recentDist[] = $activities[$i]["distance"];
         $recentTime[] = $activities[$i]["moving_time"];
-        $recentElev[] = $activities[$i]["total_elevation_gain"];
-
-        if (isset($activities[$i]["average_heartrate"])) {
-            $recentABPM[] = $activities[$i]["average_heartrate"];
-        } else {
-            $recentABPM[] = "None";
-        }
+        $recentElev[] = $activities[$i]["total_elevation_gain"] . ' m';
+        $recentABPM[] = $activities[$i]["average_heartrate"];
     }
 
     $_SESSION["loggedUser"]["recentName"] = $recentName;
