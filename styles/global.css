@@ -12,7 +12,6 @@ main {
     border: 1px solid grey;
     position: relative;
     padding: 10px;
-    /* height: 42vh; */
     max-height: 40vh;
     height: auto;
     width: auto;

@@ -1,9 +1,12 @@
 <?php
-require_once(__DIR__ . "/../src/model.php");
+require_once(__DIR__ . "/../models/model.php");
 
-$responseData = getAthleteInfo("/activities");
+function updateActivities()
+{
+    $mysqlClient = DBConnection();
+    $responseData = getAthleteInfoStrava("/activities");
 
-$sqlInsert = "INSERT INTO activities (
+    $sqlInsert = "INSERT INTO activities (
     id,
     athlete_id,
     average_cadence,
@@ -64,20 +67,19 @@ $sqlInsert = "INSERT INTO activities (
     :type,
     :upload_id,
     :weighted_average_watts)";
-$activitiesStatement = $mysqlClient->prepare($sqlInsert);
+    $activitiesStatement = $mysqlClient->prepare($sqlInsert);
 
-foreach ($responseData as $activity) {
-    // GET activities with the same id in the DB as we get from the API
-    $sqlQuery = "SELECT id FROM activities WHERE id = :id";
-    $idStatement = $mysqlClient->prepare($sqlQuery);
-    $idStatement->execute(["id" => $activity["id"]]);
+    foreach ($responseData as $activity) {
+        // GET activities with the same id in the DB as we get from the API
+        $sqlQuery = "SELECT id FROM activities WHERE id = :id";
+        $idStatement = $mysqlClient->prepare($sqlQuery);
+        $idStatement->execute(["id" => $activity["id"]]);
 
-    $existingActivity = $idStatement->fetch();
+        $existingActivity = $idStatement->fetch();
 
-    // IF an activity from the API is not in the DB, we add it
-    if ($existingActivity === false && $activity["sport_type"] === "Ride") {
+        // IF an activity from the API is not in the DB, we add it
+        if (!$existingActivity && $activity["type"] === "Ride") {
 
-        try {
             $activitiesStatement->execute([
                 "id" => $activity["id"],
                 "athlete_id" => $activity["athlete"]["id"],
@@ -109,8 +111,8 @@ foreach ($responseData as $activity) {
                 "upload_id" => $activity["upload_id"],
                 "weighted_average_watts" => $activity["weighted_average_watts"],
             ]);
-        } catch (PDOException $error) {
-            echo "Error: " . $error->getMessage();
         }
     }
+
+    header("Location: ./");
 }

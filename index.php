@@ -1,6 +1,24 @@
 <?php
 session_start();
 
-require_once(__DIR__ . "/DBConnection.php");
-require_once(__DIR__ . "/src/model.php");
-require_once(__DIR__ . "/templates/homepage.php");
+require_once(__DIR__ . "/functions.php");
+
+try {
+    $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    if (isset($path) && $path === "/cycling-stats/login") {
+        require_once(__DIR__ . "/src/controllers/auth/login.php");
+        loginController();
+    } else if ($path === "/cycling-stats/update") {
+        require_once(__DIR__ . "/src/controllers/updateActivities.php");
+    } else if ($path === "/cycling-stats/logout") {
+        require_once(__DIR__ . "/src/controllers/auth/logout.php");
+        logout();
+    } else {
+        require_once(__DIR__ . "/src/controllers/front/homepage.php");
+        homepageController();
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+} catch (PDOException $e) {
+    echo "Database error: " . $e->getMessage();
+}
