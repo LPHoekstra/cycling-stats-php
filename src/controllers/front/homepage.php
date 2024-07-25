@@ -5,7 +5,7 @@ function homepageController()
     require_once(__DIR__ . "/../../models/front/activity.php");
 
     if (isset($_SESSION["loggedUser"])) {
-        distanceLastMonth();
+        list($distance, $startDate) = distanceLastMonth();
         recentActivities();
     }
 

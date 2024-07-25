@@ -10,10 +10,10 @@
     new Chart(ctx, {
         type: "bar",
         data: {
-            labels: <?= json_encode($_SESSION["loggedUser"]["startDateLast30Act"]) ?>,
+            labels: <?= json_encode($startDate) ?>,
             datasets: [{
                 label: "distance last 30 days",
-                data: <?= json_encode($_SESSION["loggedUser"]["distanceLast30Act"]) ?>,
+                data: <?= json_encode($distance) ?>,
                 borderWidth: 0,
                 backgroundColor: "rgba(42, 99, 255, 0.8)",
             }]

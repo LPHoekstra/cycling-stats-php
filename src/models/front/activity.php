@@ -77,8 +77,7 @@ function distanceLastMonth()
     }
 
     // adding the arrays to the SESSION
-    $_SESSION["loggedUser"]["startDateLast30Act"] = $startDate;
-    $_SESSION["loggedUser"]["distanceLast30Act"] = $distance;
+    return [$distance, $startDate];
 }
 
 // data for the recent activities array in the views
