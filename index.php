@@ -19,6 +19,9 @@ try {
     }
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
+    $errorMsg = $e->getMessage();
+
+    require_once(__DIR__ . "/src/templates/error.php");
 } catch (PDOException $e) {
     echo "Database error: " . $e->getMessage();
 }

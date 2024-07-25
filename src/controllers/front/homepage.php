@@ -9,5 +9,5 @@ function homepageController()
         recentActivities();
     }
 
-    require_once(__DIR__ . "/../../templates/homepage.php");
+    require_once(__DIR__ . "/../../templates/homepage/homepage.php");
 }
