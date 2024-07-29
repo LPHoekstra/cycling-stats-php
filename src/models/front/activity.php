@@ -22,14 +22,16 @@ function getActivities()
     }
 }
 
+class LastMonthActivities
+{
+    public array $distance = []; // date with format of "d/m/Y"
+    public array $startDate = []; // distance by meters
+}
+
 // creating the array for the chart on the views
 function distanceLastMonth()
 {
     $activities = getActivities();
-
-    // initiate arrays
-    $startDate = []; // date with format of "d/m/Y"
-    $distance = []; // distance by meters
 
     if (!$activities[0]["distance"] || !$activities[0]["start_date_local"]) {
         throw new Exception("distance and/or start date missing");
@@ -37,6 +39,7 @@ function distanceLastMonth()
 
     // getting actual date
     $date = new DateTime();
+    $LastMonthActivities = new LastMonthActivities();
 
     // Looking for activities over the last 31 days
     for ($i = 0; $i < 31; $i++) {
@@ -48,6 +51,7 @@ function distanceLastMonth()
             // extract the date from the activity start date
             $activityDate = explode("T", $act["start_date_local"])[0];
 
+
             // If an activity have the same date as the compared one, it's added to the array
             if ($activityDate === $dateString) {
                 $activityFound = true;
@@ -55,12 +59,12 @@ function distanceLastMonth()
                 $displayedDate = $dateTotalExplode[2] . '/' . $dateTotalExplode[1] . '/' . $dateTotalExplode[0];
 
                 // If the last added date is the same, we add the distance to the existing distance
-                if (!empty($startDate) && $displayedDate === end($startDate)) {
-                    $lastIndex = array_key_last($distance);
-                    $distance[$lastIndex] += $act["distance"];
+                if (!empty($LastMonthActivities->startDate) && $displayedDate === end($LastMonthActivities->startDate)) {
+                    $lastIndex = array_key_last($LastMonthActivities->distance);
+                    $LastMonthActivities->distance[$lastIndex] += $act["distance"];
                 } else {
-                    $distance[] = $act["distance"];
-                    $startDate[] = $displayedDate;
+                    $LastMonthActivities->distance[] = $act["distance"];
+                    $LastMonthActivities->startDate[] = $displayedDate;
                 }
             }
         }
@@ -69,15 +73,14 @@ function distanceLastMonth()
         if (!$activityFound) {
             $dateTotalExplode = explode("-", $dateString);
             $displayedDate = $dateTotalExplode[2] . '/' . $dateTotalExplode[1] . '/' . $dateTotalExplode[0];
-            $distance[] = 0;
-            $startDate[] = $displayedDate;
+            $LastMonthActivities->distance[] = 0;
+            $LastMonthActivities->startDate[] = $displayedDate;
         }
 
         $date->modify("-1 day");
     }
 
-    // adding the arrays to the SESSION
-    return [$distance, $startDate];
+    return $LastMonthActivities;
 }
 
 // data for the recent activities array in the views
