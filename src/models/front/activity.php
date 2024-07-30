@@ -1,117 +1,129 @@
 <?php
+
+declare(strict_types=1);
+
 require_once(__DIR__ . "/../../../DBConnection.php");
 
-// get activities from the DB
-function getActivities()
+class GetActivities
 {
-    // get last activities and use it
-    if (isset($_SESSION["loggedUser"])) {
+    public array $activities = [];
+
+    public function __construct()
+    {
+        $this->fetchActivities();
+    }
+
+    // get activities from the DB
+    private function fetchActivities(): void
+    {
         $mysqlClient = DBConnection();
 
         // get the activities from the DB
-        $sqlSelect = "SELECT * FROM activities WHERE athlete_id = :athlete_id ORDER BY `activities`.`start_date_local` DESC";
+        $sqlSelect = "SELECT * FROM activities WHERE athlete_id = :athlete_id ORDER BY start_date_local DESC LIMIT 30";
         $activitiesStatement = $mysqlClient->prepare($sqlSelect);
         $activitiesStatement->execute(["athlete_id" => $_SESSION["loggedUser"]["athlete_id"]]);
 
-        $activities = $activitiesStatement->fetchAll(PDO::FETCH_ASSOC);
-        if (!$activities) {
+        $this->activities = $activitiesStatement->fetchAll(PDO::FETCH_ASSOC);
+        if (!$this->activities) {
             throw new Exception("Activities missing");
         }
-
-        return $activities;
     }
 }
+
 
 class LastMonthActivities
 {
-    public array $distance = []; // date with format of "d/m/Y"
-    public array $startDate = []; // distance by meters
-}
+    public array $distance = []; // distance in meters
+    public array $startDate = []; // date in format of "d/m/Y"
 
-// creating the array for the chart on the views
-function distanceLastMonth()
-{
-    $activities = getActivities();
-
-    if (!$activities[0]["distance"] || !$activities[0]["start_date_local"]) {
-        throw new Exception("distance and/or start date missing");
+    // Creates the arrays for distance and start dates for the last 31 days
+    public function __construct(array $activities)
+    {
+        $this->distanceLastMonth($activities);
     }
 
-    // getting actual date
-    $date = new DateTime();
-    $LastMonthActivities = new LastMonthActivities();
+    private function distanceLastMonth(array $activities): void
+    {
+        if (empty($activities) || !isset($activities[0]["distance"], $activities[0]["start_date_local"])) {
+            throw new Exception("distance and/or start date missing in the activities data");
+        }
 
-    // Looking for activities over the last 31 days
-    for ($i = 0; $i < 31; $i++) {
-        $dateString = $date->format("Y-m-d");
-        $activityFound = false;
+        $date = new DateTime();
 
-        // Compare each activity with the current date
-        foreach ($activities as $act) {
-            // extract the date from the activity start date
-            $activityDate = explode("T", $act["start_date_local"])[0];
+        for ($i = 0; $i < 31; $i++) {
+            $dateString = $date->format("Y-m-d");
+            $activityFound = false;
 
+            foreach ($activities as $act) {
+                $activityDate = explode("T", $act["start_date_local"])[0];
 
-            // If an activity have the same date as the compared one, it's added to the array
-            if ($activityDate === $dateString) {
-                $activityFound = true;
-                $dateTotalExplode = explode("-", $activityDate);
-                $displayedDate = $dateTotalExplode[2] . '/' . $dateTotalExplode[1] . '/' . $dateTotalExplode[0];
+                // If an activity have the same date as the compared one, it's added to the array
+                if ($activityDate === $dateString) {
+                    $activityFound = true;
+                    $displayedDate = $this->formatDate($activityDate);
 
-                // If the last added date is the same, we add the distance to the existing distance
-                if (!empty($LastMonthActivities->startDate) && $displayedDate === end($LastMonthActivities->startDate)) {
-                    $lastIndex = array_key_last($LastMonthActivities->distance);
-                    $LastMonthActivities->distance[$lastIndex] += $act["distance"];
-                } else {
-                    $LastMonthActivities->distance[] = $act["distance"];
-                    $LastMonthActivities->startDate[] = $displayedDate;
+                    // If the last added date is the same, we add the distance to the existing distance
+                    if (!empty($this->startDate) && $displayedDate === end($this->startDate)) {
+                        $lastIndex = array_key_last($this->distance);
+                        $this->distance[$lastIndex] += $act["distance"];
+                    } else {
+                        $this->distance[] = $act["distance"];
+                        $this->startDate[] = $displayedDate;
+                    }
                 }
             }
-        }
 
-        // If no activities have been added for the date, set distance to 0
-        if (!$activityFound) {
-            $dateTotalExplode = explode("-", $dateString);
-            $displayedDate = $dateTotalExplode[2] . '/' . $dateTotalExplode[1] . '/' . $dateTotalExplode[0];
-            $LastMonthActivities->distance[] = 0;
-            $LastMonthActivities->startDate[] = $displayedDate;
-        }
+            // If no activities have been added for the date, set distance to 0
+            if (!$activityFound) {
+                $displayedDate = $this->formatDate($dateString);
+                $this->distance[] = 0;
+                $this->startDate[] = $displayedDate;
+            }
 
-        $date->modify("-1 day");
+            $date->modify("-1 day");
+        }
     }
 
-    return $LastMonthActivities;
+    // Formats the date from "Y-m-d" to "d/m/Y"
+    private function formatDate(string $dateToExplode): string
+    {
+        $dateExplode = explode("-", $dateToExplode);
+        return $dateExplode[2] . '/' . $dateExplode[1] . '/' . $dateExplode[0];
+    }
 }
 
-// data for the recent activities array in the views
-function recentActivities()
+class RecentActivities
 {
-    $activities = getActivities();
+    public $recentName = [];
+    public $recentDate = []; // date with format of "d/m/Y"
+    public $recentDist = []; // distance by meters
+    public $recentTime = []; // time in second
+    public $recentElev = []; // elevation in meters
+    public $recentABPM = [];
 
-    // initiate arrays
-    $recentName = [];
-    $recentDate = []; // date with format of "d/m/Y"
-    $recentDist = []; // distance by meters
-    $recentTime = []; // time in second
-    $recentElev = []; // elevation in meters
-    $recentABPM = [];
-
-    for ($i = 0; $i < 10; $i++) {
-        $recentName[] = $activities[$i]["name"];
-        $dateExplode = explode("T", $activities[$i]["start_date_local"])[0];
-        $date = explode("-", $dateExplode);
-        $recentDate[] = $date[2] . '/' . $date[1] . '/' . $date[0];
-
-        $recentDist[] = $activities[$i]["distance"];
-        $recentTime[] = $activities[$i]["moving_time"];
-        $recentElev[] = $activities[$i]["total_elevation_gain"] . ' m';
-        $recentABPM[] = $activities[$i]["average_heartrate"];
+    public function __construct(array $activities)
+    {
+        $this->recentActivities($activities);
     }
 
-    $_SESSION["loggedUser"]["recentName"] = $recentName;
-    $_SESSION["loggedUser"]["recentDate"] = $recentDate;
-    $_SESSION["loggedUser"]["recentDist"] = $recentDist;
-    $_SESSION["loggedUser"]["recentTime"] = $recentTime;
-    $_SESSION["loggedUser"]["recentElev"] = $recentElev;
-    $_SESSION["loggedUser"]["recentABPM"] = $recentABPM;
+    // data for the recent activities array in the views
+    private function recentActivities(array $activities): void
+    {
+        for ($i = 0; $i < 10; $i++) {
+            $this->recentName[] = $activities[$i]["name"];
+            $dateExplode = explode("T", $activities[$i]["start_date_local"])[0];
+            $this->recentDate[] = $this->formatDate($dateExplode);
+            $this->recentDist[] = $activities[$i]["distance"];
+            $this->recentTime[] = $activities[$i]["moving_time"];
+            $this->recentElev[] = $activities[$i]["total_elevation_gain"] . ' m';
+            $this->recentABPM[] = $activities[$i]["average_heartrate"];
+        }
+    }
+
+    // Formats the date from "Y-m-d" to "d/m/Y"
+    private function formatDate(string $dateToExplode): string
+    {
+        $dateExplode = explode("-", $dateToExplode);
+        return $dateExplode[2] . '/' . $dateExplode[1] . '/' . $dateExplode[0];
+    }
 }
