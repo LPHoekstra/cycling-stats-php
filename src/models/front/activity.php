@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-require_once(__DIR__ . "/../../../DBConnection.php");
-
 class GetActivities
 {
     public array $activities = [];
@@ -16,7 +14,7 @@ class GetActivities
     // get activities from the DB
     private function fetchActivities(): void
     {
-        $mysqlClient = DBConnection();
+        $mysqlClient = DataBase::getInstance()->getConnection();
 
         // get the activities from the DB
         $sqlSelect = "SELECT * FROM activities WHERE athlete_id = :athlete_id ORDER BY start_date_local DESC LIMIT 30";

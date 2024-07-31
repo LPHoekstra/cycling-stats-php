@@ -1,7 +1,9 @@
 <?php
+// temporary controller 
 session_start();
 
 require_once(__DIR__ . "/functions.php");
+require_once(__DIR__ . "/DBConnection.php");
 
 try {
     $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
@@ -10,6 +12,7 @@ try {
         loginController();
     } else if ($path === "/cycling-stats/update") {
         require_once(__DIR__ . "/src/controllers/updateActivities.php");
+        updateActivitiesController();
     } else if ($path === "/cycling-stats/logout") {
         require_once(__DIR__ . "/src/controllers/auth/logout.php");
         logout();

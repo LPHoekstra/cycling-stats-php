@@ -1,3 +1,8 @@
 <?php
 require_once(__DIR__ . "/../models/updateActivities.php");
-updateActivities();
+
+function updateActivitiesController()
+{
+    $fetchActivities = (new StravaService)->getAthleteInfoStrava("/activities");
+    new UpdateActivities($fetchActivities);
+}
