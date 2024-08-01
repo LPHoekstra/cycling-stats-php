@@ -16,6 +16,9 @@ try {
     } else if ($path === "/cycling-stats/logout") {
         require_once(__DIR__ . "/src/controllers/auth/logout.php");
         logout();
+    } else if ($path === "/cycling-stats/activities") {
+        require_once(__DIR__ . "/src/controllers/front/activities.php");
+        new ActivitiesController;
     } else {
         require_once(__DIR__ . "/src/controllers/front/homepage.php");
         homepageController();

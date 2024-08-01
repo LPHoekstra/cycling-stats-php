@@ -4,7 +4,7 @@ require_once(__DIR__ . "/config/mysql.php");
 class DataBase
 {
     private static $instance = null;
-    private $connection;
+    private ?PDO $connection;
 
     private function __construct()
     {

@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<h1>Bienvenue sur Cycling Stats
+<h1>Welcome on Cycling Stats
     <?php if (isset($_SESSION["loggedUser"])) {
         echo htmlspecialchars($_SESSION["loggedUser"]["firstname"], ENT_QUOTES, 'UTF-8');
     } ?>

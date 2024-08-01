@@ -5,13 +5,13 @@
     <nav>
         <ul class="navBar">
             <li class="navBar__liste">
-                <a class="navBar__link" href="">Summary</a>
+                <a class="navBar__link" href="https://localhost/cycling-stats/">Summary</a>
             </li>
             <li class="navBar__liste">
-                <a class="navBar__link" href="">Activities</a>
+                <a class="navBar__link" href="https://localhost/cycling-stats/activities">Activities</a>
             </li>
             <li class="navBar__liste">
-                <a class="navBar__link" href="https://localhost/cycling-stats/update">update</a>
+                <a class="navBar__link" href="https://localhost/cycling-stats/update">Update</a>
             </li>
         </ul>
     </nav>
@@ -26,7 +26,7 @@
             <img class="user-contenair__picture" src=<?= htmlspecialchars($_SESSION["loggedUser"]["profile"], ENT_QUOTES, 'UTF-8') ?> alt="profile picture">
             <span class="user-contenair__login"><?= htmlspecialchars($_SESSION["loggedUser"]["firstname"], ENT_QUOTES, 'UTF-8') ?></span>
             <a href="logout">
-                <button>Déconnexion</button>
+                <button>logout</button>
             </a>
         <?php endif ?>
     </div>

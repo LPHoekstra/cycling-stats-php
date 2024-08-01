@@ -13,8 +13,8 @@ class Login
     public function __construct()
     {
         $this->data = [
-            "client_id" => STRAVAAPI_CLIENTID,
-            "client_secret" => STRAVAAPI_CLIENTSECRET,
+            "client_id" => STRAVA_API_CLIENTID,
+            "client_secret" => STRAVA_API_CLIENTSECRET,
             "code" => htmlspecialchars($_GET["code"]),
             "grant_type" => "authorization_code",
         ];
