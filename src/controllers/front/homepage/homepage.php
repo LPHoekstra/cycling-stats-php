@@ -2,7 +2,7 @@
 
 function homepageController()
 {
-    require_once(__DIR__ . "/../../models/front/activity.php");
+    require_once(__DIR__ . "/../../../models/front/homepage/activity.php");
 
     if (isset($_SESSION["loggedUser"])) {
         $getActivities = new GetActivities;
@@ -12,5 +12,5 @@ function homepageController()
         $recentActivities = new RecentActivities($activities);
     }
 
-    require_once(__DIR__ . "/../../templates/homepage/homepage.php");
+    require_once(__DIR__ . "/../../../templates/homepage/homepage.php");
 }

@@ -25,7 +25,7 @@
                     Speed <br>
                     km/h</th>
 
-                <?php if ($powerMeter === "Yes") : ?>
+                <?php if ($activities->hasPower) : ?>
                     <th>Pwr <br>
                         W</th>
                     <th>Weighted <br>
@@ -33,6 +33,9 @@
                         W</th>
                     <th>Max <br>
                         Power</th>
+                    <?php if ($activities->hasHeartrate) : ?>
+                        <th>W/HR</th>
+                    <?php endif ?>
                 <?php endif ?>
 
             <?php elseif ($type === "Run") : ?>
@@ -54,7 +57,7 @@
 
             <th>Cad</th>
 
-            <?php if ($heart === "Yes") : ?>
+            <?php if ($activities->hasHeartrate) : ?>
                 <th>Heart</th>
                 <th>Max <br>
                     Heart</th>
@@ -70,17 +73,38 @@
                 m/km</th>
             <th>Elev/Time <br>
                 m/h</th>
+            <th>Temp <br>
+                °C</th>
+            <th>Cal</th>
+            <th>Energy <br>
+                KJ</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+        <?php
+        $count = count($activities->when);
+
+        for ($i = 0; $i < $count; $i++) : ?>
+            <tr>
+                <td><?= htmlspecialchars($activities->when[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->sportType[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->name[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->distance[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->elev[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->elapsedTime[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->movingTime[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->startTime[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->speed[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->maxSpeed[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->power[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->weightedPower[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->maxPower[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->wattsHeart[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->cadence[$i], ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($activities->heart[$i], ENT_QUOTES, 'UTF-8') ?></td>
+
+            </tr>
+        <?php endfor ?>
     </tbody>
 </table>
 
